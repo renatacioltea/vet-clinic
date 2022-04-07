@@ -1,6 +1,6 @@
 :root {
-  --background-color: #c8e4fb;
-  --primary-font-clr: #efe6ea;
+  --background-color: rgba(81, 161, 137, 0.34);
+  --primary-font-clr: rgba(255, 255, 255, 1);
   --btn-color: rgba(20, 44, 156, 0.56);
 }
 
