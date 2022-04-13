@@ -1,0 +1,25 @@
+:root {
+  --background-color: rgba(81, 161, 137, 0.34);
+  --primary-font-clr: rgba(255, 255, 255, 1);
+  --btn-color: rgba(20, 44, 156, 0.56);
+}
+
+nav,
+footer {
+  --background-color: rgba(173, 206, 172, 1);
+}
+
+.center {
+  --second-back-color: rgba(0, 213, 183, 0.1);
+}
+
+form {
+  --form-background: rgba(0, 213, 183, 0.1);
+}
+input {
+  --input-background: rgba(223, 214, 214, 0.31);
+}
+
+form {
+  --shadow: rgba(62, 60, 69, 0.65);
+}
