@@ -1,274 +1,98 @@
-// FUNCTION CONSTRUCTOR
+import ownerList from "../data/owners.js";
 
-// function Owner(
-//   firstName,
-//   lastName,
-//   phoneNumber,
-//   email,
-//   password,
-//   repeatPassword
-// ) {
-//   this.firstName = firstName;
-//   this.lastName = lastName;
-//   this.phoneNumber = phoneNumber;
-//   this.email = email;
-//   this.password = password;
-//   this.repeatPassword = repeatPassword;
-// }
+console.log(ownerList);
+const arrayOfPets = ownerList.map((owner) => {
+  return {
+    petName: owner.pet.petName,
+    petAge: owner.pet.petAge,
+    petType: owner.pet.petType,
+    firstName: owner.firstName,
+    lastName: owner.lastName,
+  };
+});
 
-// const owner1 = new Owner(
-//   "Maria",
-//   "Lucaci",
-//   "0745123456",
-//   "maria@gmail.com",
-//   "@!@!21",
-//   "@!@!21"
-// );
-// console.log(owner1);
-
-// CLASS
-
-class Owner {
-  constructor(
-    firstName,
-    lastName,
-    phoneNumber,
-    email,
-    password,
-    repeatPassword,
-    petType
-  ) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.phoneNumber = phoneNumber;
-    this.email = email;
-    this.password = password;
-    this.repeatPassword = repeatPassword;
-    // this.petType = petType;
-  }
-}
-
-function hasPetType(owners) {
-  for (let owner in owners) {
-    owner.getPetType();
-  }
-}
-
-const owner1 = new Owner(
-  "Maria",
-  "Lucaci",
-  "0745123456",
-  "maria@gmail.com",
-  "@!@!21",
-  "@!@!21",
-  "dog"
-);
-
-const owner2 = new Owner(
-  "Ion",
-  "Ionescu",
-  "0745123456",
-  "ion@gmail.com",
-  "@!@!21",
-  "@!@!21",
-  "cat"
-);
-
-const owner3 = new Owner(
-  "Ana",
-  "Pop",
-  "0745123456",
-  "ana@gmail.com",
-  "@!@!21",
-  "@!@!21",
-  "bunny"
-);
-
-const owner4 = new Owner(
-  "Stefan",
-  "Popescu",
-  "0745123456",
-  "stefan@gmail.com",
-  "@!@!21",
-  "@!@!21",
-  "parrot"
-);
-
-const owner5 = new Owner(
-  "Marius",
-  "Nemes",
-  "0745123456",
-  "marius@gmail.com",
-  "@!@!21",
-  "@!@!21",
-  "hamster"
-);
-
-const owners = [owner1, owner2, owner3, owner4, owner5];
-console.log(owners);
-
-console.log(owner1.getPetType());
-// // FUNCTION CONSTRUCTOR
-
-// // function Pet(petName, petAge, petType) {
-// //   this.petName = petName;
-// //   this.petAge = petAge;
-// //   this.petType = petType;
-// // }
-
-// // const pet1 = new Pet("Stevie", 4, "dog");
-// // const pet2 = new Pet("Hero", 2, "cat");
-// // const pet3 = new Pet("Bruno", 5, "bunny");
-// // const pet4 = new Pet("Jacob", 1, "parrot");
-// // const pet5 = new Pet("Bella", 4, "hamster");
-
-// // console.log(pet1);
-
-// // CLASS
-
-class Pets {
-  constructor(petName, petAge, petType) {
-    this.petName = petName;
-    this.petAge = petAge;
-    this.petType = petType;
-  }
-
-  getPetType() {
-    return this.petType;
-  }
-}
-
-class Cat extends Pets {
-  constructor(petName, petAge, petType, likesToEat) {
-    super(petName, petAge, petType);
-    this.likesToEat = likesToEat;
-  }
-}
-
-class Dog extends Pets {
-  constructor(petName, petAge, petType, breed) {
-    super(petName, petAge, petType);
-    this.bread = breed;
-  }
-}
-
-class Rabbit extends Pets {
-  constructor(petName, petAge, petType, earLength) {
-    super(petName, petAge, petType);
-    this.earLength = earLength;
-  }
-}
-
-class Parrot extends Pets {
-  constructor(petName, petAge, petType, featherColor) {
-    super(petName, petAge, petType);
-    this.featherColor = featherColor;
-  }
-}
-
-class Snake extends Pets {
-  constructor(petName, petAge, petType, length) {
-    super(petName, petAge, petType);
-    this.length = length;
-  }
-}
-
-// const pet1 = new Cat("Dolly,");
-
-const pet2 = new Dog("Hero", 2, "dog", "husky");
-console.log(pet2.getPetType());
-// const pet3 = new Rabbit("Bruno", 5, "rabbit", "10cm");
-// const pet4 = new Parrot("Jacob", 1, "parrot", "red");
-// const pet5 = new Snake("Bella", 4, "hamster", "2m");
-
-// console.log(pet1);
-// console.log(pet2);
-// console.log(pet3);
-// console.log(pet4);
-// console.log(pet5);
-
-// const owners = [owner1, owner2, owner3, owner4, owner5];
-// Display a table of pet owners and a table of pets, with link to their owner
+console.log(arrayOfPets);
 
 // creating a table
 
-const tableWithOwners = buildOwnerTable(owners);
-document.body.appendChild(tableWithOwners);
+const tableOfOwners = buildOwnerTable(ownerList);
+document.body.appendChild(tableOfOwners);
+const tableOfPets = buildTableOfPets(arrayOfPets);
+document.body.appendChild(tableOfPets);
+
+function cell(cellType, cellText, node = false) {
+  const bodyCell = document.createElement(cellType);
+  if (!node) {
+    const bodyCellText = document.createTextNode(cellText);
+    bodyCell.appendChild(bodyCellText);
+  } else {
+    bodyCell.appendChild(cellText);
+  }
+
+  return bodyCell;
+}
+
+function generateLink(url, text, ownerName) {
+  const a = document.createElement("a");
+  const link = document.createTextNode(text);
+  a.appendChild(link);
+  a.href = url;
+
+  a.addEventListener("click", () => {
+    showName(ownerName);
+  });
+
+  return a;
+}
+
+function showName(ownerNameText) {
+  const ownerName = document.createTextNode(ownerNameText);
+  const ownerNameTag = document.getElementById("owner-name");
+  ownerNameTag.innerHTML = "";
+  ownerNameTag.appendChild(ownerName);
+}
 
 function buildOwnerTable(owners) {
   const tableOfOwners = document.createElement("table");
 
   const tableOfOwnersHeading = document.createElement("tr");
 
-  const firstNameHeading = document.createElement("th");
-  const firstNameHeadingText = document.createTextNode("First Name");
-  const lastNameHeading = document.createElement("th");
-  const lastNameHeadingText = document.createTextNode("Last Name");
-
-  const phoneNumberHeading = document.createElement("th");
-  const phoneNumberHeadingText = document.createTextNode("Phone Number");
-
-  const emailHeading = document.createElement("th");
-  const emailHeadingText = document.createTextNode("Email");
-
-  const passwordHeading = document.createElement("th");
-  const passwordHeadingText = document.createTextNode("Password");
-
-  const repeatPasswordHeading = document.createElement("th");
-  const repeatPasswordHeadingText = document.createTextNode("Repeat-Password");
-
-  firstNameHeading.appendChild(firstNameHeadingText);
-  lastNameHeading.appendChild(lastNameHeadingText);
-  phoneNumberHeading.appendChild(phoneNumberHeadingText);
-  emailHeading.appendChild(emailHeadingText);
-  passwordHeading.appendChild(passwordHeadingText);
-  repeatPasswordHeading.appendChild(repeatPasswordHeadingText);
+  const idHeading = cell("th", "Owner id");
+  const firstNameHeading = cell("th", "First Name");
+  const lastNameHeading = cell("th", "Last Name");
+  const phoneNumberHeading = cell("th", "Phone Number");
+  const emailHeading = cell("th", "Email");
 
   tableOfOwnersHeading.append(
+    idHeading,
     firstNameHeading,
     lastNameHeading,
     phoneNumberHeading,
-    emailHeading,
-    passwordHeading,
-    repeatPasswordHeading
+    emailHeading
   );
   tableOfOwners.appendChild(tableOfOwnersHeading);
   document.body.appendChild(tableOfOwners);
 
   for (let owner of owners) {
-    console.log(owner);
-    const tableRow = document.createElement("tr");
-    const tableRowOwnerFirstName = document.createElement("td");
-    const tableRowOwnerLastName = document.createElement("td");
-
-    const tableRowOwnerPhoneNumber = document.createElement("td");
-    const tableRowOwnerEmail = document.createElement("td");
-    const tableRowOwnerPassword = document.createElement("td");
-    const tableRowOwnerRepeatPassword = document.createElement("td");
-
-    const tableRowTextFirstName = document.createTextNode(owner.firstName);
-    const tableRowTextLastName = document.createTextNode(owner.lastName);
-    const tableRowTextPhoneNumber = document.createTextNode(owner.phoneNumber);
-    const tableRowTextEmail = document.createTextNode(owner.email);
-    const tableRowTextPassword = document.createTextNode(owner.password);
-    const tableRowTextRepeatPassword = document.createTextNode(
-      owner.repeatPassword
+    const a = generateLink(
+      `/vetStructure.html#${owner.id}`,
+      owner.id,
+      `${owner.firstName} ${owner.lastName}`
     );
+    const idCell = cell("td", a, true);
+    const firstNameCell = cell("td", owner.firstName);
+    const lastNameCell = cell("td", owner.lastName);
+    const phoneNumberCell = cell("td", owner.phoneNumber);
+    const emailCell = cell("td", owner.email);
 
-    tableRowOwnerFirstName.appendChild(tableRowTextFirstName);
-    tableRowOwnerLastName.appendChild(tableRowTextLastName);
-    tableRowOwnerPhoneNumber.appendChild(tableRowTextPhoneNumber);
-    tableRowOwnerEmail.appendChild(tableRowTextEmail);
-    tableRowOwnerPassword.appendChild(tableRowTextPassword);
-    tableRowOwnerRepeatPassword.appendChild(tableRowTextRepeatPassword);
+    const tableRow = document.createElement("tr");
 
     tableRow.append(
-      tableRowOwnerFirstName,
-      tableRowOwnerLastName,
-      tableRowOwnerPhoneNumber,
-      tableRowOwnerEmail,
-      tableRowOwnerPassword,
-      tableRowOwnerRepeatPassword
+      idCell,
+      firstNameCell,
+      lastNameCell,
+      phoneNumberCell,
+      emailCell
     );
 
     tableOfOwners.appendChild(tableRow);
@@ -276,4 +100,112 @@ function buildOwnerTable(owners) {
   return tableOfOwners;
 }
 
-//create pets table
+function buildTableOfPets(arrayOfPets) {
+  const tableOfPets = document.createElement("table");
+
+  const tableOfPetsHeading = document.createElement("tr");
+
+  const petNameHeading = cell("th", "Pet Name");
+  const petAgeHeading = cell("th", "Pet Age");
+  const petTypeHeading = cell("th", "Pet Type");
+  const firstNameHeading = cell("th", "First Name");
+  const lastNameHeading = cell("th", "Last Name");
+
+  tableOfPetsHeading.append(
+    petNameHeading,
+    petAgeHeading,
+    petTypeHeading,
+    firstNameHeading,
+    lastNameHeading
+  );
+
+  //dropdown list
+  const options = arrayOfPets.map((pet) => {
+    return pet.petType;
+  });
+  console.log(options);
+
+  const select = document.getElementById("selectPetType");
+  for (let i = 0; i < options.length; i++) {
+    let option = options[i];
+    let element = document.createElement("option");
+    element.textContent = option;
+    element.value = option;
+
+    select.appendChild(element);
+  }
+
+  select.addEventListener("change", selectDropdown);
+
+  petTypeHeading.appendChild(select);
+  tableOfPets.appendChild(tableOfPetsHeading);
+  document.body.appendChild(tableOfPets);
+
+  for (let pet of arrayOfPets) {
+    // console.log(pet);
+    const tableRow = document.createElement("tr");
+
+    const a = generateLink(
+      `/vetStructure.html#/${pet.firstName} ${pet.lastName}`,
+      pet.petName,
+      `${pet.firstName} ${pet.lastName}`
+    );
+
+    const petNameCell = cell("td", a, true);
+    const petAgeCell = cell("td", pet.petAge);
+    const petTypeCell = cell("td", pet.petType);
+    const firstNameCell = cell("td", pet.firstName);
+    const lastNameCell = cell("td", pet.lastName);
+
+    tableRow.append(
+      petNameCell,
+      petAgeCell,
+      petTypeCell,
+      firstNameCell,
+      lastNameCell
+    );
+
+    tableRow.classList.add(pet.petType);
+    tableRow.classList.add("table-row");
+
+    tableOfPets.appendChild(tableRow);
+  }
+
+  return tableOfPets;
+}
+
+/**
+ * Event handler when dropdown value changes.
+ */
+function selectDropdown() {
+  // Before filtering we reset the table to its initial state.
+  resetTable();
+
+  // Select all table rows that have table-row as a class, but not
+  // the selected value from the dropdown.
+  // querySelectorAll is used because we have a more complex selector.
+  // querySelectorAll will return an array of all the table rows that we need to hide.
+  const hidableRows = document.querySelectorAll(
+    `.table-row:not(.${this.value})`
+  );
+
+  // iterate over all found rows, and hide them(css).
+  hidableRows.forEach((row) => {
+    row.style.display = "none";
+  });
+}
+
+/**
+ * Reset function that will make all table rows visible in case they are not.
+ */
+function resetTable() {
+  // Select all table rows that have the class: table-row. querySelectorAll() returns
+  // an array of elements.
+  const tableRows = document.querySelectorAll(`.table-row`);
+
+  // iterate over all table rows found, and set the display(css) to table-row.
+  // In case the table row had display=none, it will be reset.
+  tableRows.forEach((row) => {
+    row.style.display = "table-row";
+  });
+}
