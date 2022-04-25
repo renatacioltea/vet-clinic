@@ -1,20 +1,27 @@
 import ownerList from "../data/owners.js";
 
-console.log(ownerList);
-const arrayOfPets = ownerList.map((owner) => {
-  return {
-    petName: owner.pet.petName,
-    petAge: owner.pet.petAge,
-    petType: owner.pet.petType,
-    firstName: owner.firstName,
-    lastName: owner.lastName,
-  };
+//create an array of pets
+const arrayOfPets = new Array();
+
+ownerList.forEach((owner) => {
+  owner.pet.forEach((pet) => {
+    arrayOfPets.push({
+      petName: pet.petName,
+      petAge: pet.petAge,
+      petType: pet.petType,
+      firstName: owner.firstName,
+      lastName: owner.lastName,
+    });
+  });
 });
 
-console.log(arrayOfPets);
+document.addEventListener("click", consoleLogEvent);
+
+function consoleLogEvent(e) {
+  console.log(e);
+}
 
 // creating a table
-
 const tableOfOwners = buildOwnerTable(ownerList);
 document.body.appendChild(tableOfOwners);
 const tableOfPets = buildTableOfPets(arrayOfPets);
@@ -62,20 +69,22 @@ function buildOwnerTable(owners) {
   const lastNameHeading = cell("th", "Last Name");
   const phoneNumberHeading = cell("th", "Phone Number");
   const emailHeading = cell("th", "Email");
+  const actionHeading = cell("th", "Action");
 
   tableOfOwnersHeading.append(
     idHeading,
     firstNameHeading,
     lastNameHeading,
     phoneNumberHeading,
-    emailHeading
+    emailHeading,
+    actionHeading
   );
   tableOfOwners.appendChild(tableOfOwnersHeading);
   document.body.appendChild(tableOfOwners);
 
   for (let owner of owners) {
     const a = generateLink(
-      `/vetStructure.html#${owner.id}`,
+      `/ownerDetails.html?id=${owner.id}`,
       owner.id,
       `${owner.firstName} ${owner.lastName}`
     );
@@ -84,15 +93,21 @@ function buildOwnerTable(owners) {
     const lastNameCell = cell("td", owner.lastName);
     const phoneNumberCell = cell("td", owner.phoneNumber);
     const emailCell = cell("td", owner.email);
+    const actionCell = cell("td");
+    actionCell.innerHTML = "<button class='delete-button'>Delete</button>";
+
+    actionCell.addEventListener("mouseover", onHover);
 
     const tableRow = document.createElement("tr");
+    tableRow.classList.add("table-rowOwner");
 
     tableRow.append(
       idCell,
       firstNameCell,
       lastNameCell,
       phoneNumberCell,
-      emailCell
+      emailCell,
+      actionCell
     );
 
     tableOfOwners.appendChild(tableRow);
@@ -110,13 +125,15 @@ function buildTableOfPets(arrayOfPets) {
   const petTypeHeading = cell("th", "Pet Type");
   const firstNameHeading = cell("th", "First Name");
   const lastNameHeading = cell("th", "Last Name");
+  const actionHeading = cell("th", "Action");
 
   tableOfPetsHeading.append(
     petNameHeading,
     petAgeHeading,
     petTypeHeading,
     firstNameHeading,
-    lastNameHeading
+    lastNameHeading,
+    actionHeading
   );
 
   //dropdown list
@@ -142,7 +159,6 @@ function buildTableOfPets(arrayOfPets) {
   document.body.appendChild(tableOfPets);
 
   for (let pet of arrayOfPets) {
-    // console.log(pet);
     const tableRow = document.createElement("tr");
 
     const a = generateLink(
@@ -156,13 +172,17 @@ function buildTableOfPets(arrayOfPets) {
     const petTypeCell = cell("td", pet.petType);
     const firstNameCell = cell("td", pet.firstName);
     const lastNameCell = cell("td", pet.lastName);
+    const actionCell = cell("td");
+    actionCell.innerHTML = "<button class='delete-button'>Delete</button>";
+    actionCell.addEventListener("mouseover", onHover);
 
     tableRow.append(
       petNameCell,
       petAgeCell,
       petTypeCell,
       firstNameCell,
-      lastNameCell
+      lastNameCell,
+      actionCell
     );
 
     tableRow.classList.add(pet.petType);
@@ -208,4 +228,57 @@ function resetTable() {
   tableRows.forEach((row) => {
     row.style.display = "table-row";
   });
+}
+
+//Table rows will change color when we mouse mous over
+
+//Change color on owners table row
+const tableRows = document.querySelectorAll(`.table-row`);
+
+tableRows.forEach((row) =>
+  row.addEventListener("mouseover", (e) => {
+    e.target.parentNode.style.color = "red";
+    setTimeout(function () {
+      e.target.parentNode.style.color = "";
+    }, 900);
+  })
+);
+
+//Change color on pets table row
+const tableRowsOwners = document.querySelectorAll(`.table-rowOwner`);
+
+tableRowsOwners.forEach((row) => {
+  row.addEventListener("mouseover", (e) => {
+    e.target.parentNode.style.color = "red";
+    setTimeout(function () {
+      e.target.parentNode.style.color = "";
+    }, 900);
+  });
+});
+
+// we add event listeners to the tables, on click we call de onDeleteRow function
+tableOfOwners.addEventListener("click", onDeleteRow);
+tableOfPets.addEventListener("click", onDeleteRow);
+
+function onDeleteRow(e) {
+  if (!e.target.classList.contains("delete-button")) {
+    return;
+  }
+  const button = e.target;
+  let text = "Do you want to delete this row?\nSelect OK or Cancel.";
+  if (confirm(text) === true) {
+    text = "You pressed OK!";
+    button.closest("tr").remove();
+  } else {
+    text = "You canceled!";
+  }
+}
+
+//delete button change background color when we hover over
+function onHover(e) {
+  e.target.style.background = "red";
+
+  setTimeout(function () {
+    e.target.style.background = "";
+  }, 900);
 }

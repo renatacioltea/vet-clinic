@@ -22,7 +22,7 @@
 <body>
     <div class="center register">
         
-        <form action="" method="post">
+        <form  id="form-register">
             <h1>Create new account</h1>
 
             <div class="wrapper">
@@ -71,6 +71,7 @@
                             required
                             placeholder="example@mail.com"
                         />
+                        <span class="error"></span>
                     </div>
                 
                     <div class="row">
@@ -78,8 +79,8 @@
                         <input 
                             type="password" 
                             id="pass" 
-                            name="password"r
-                            equired
+                            name="password"
+                            required
                             placeholder="Create your password"
                         />
                     </div>
@@ -139,5 +140,8 @@
         </form>
     </div>
 
+    
+    <script type="module" src="js/loadData.js"></script>
+    <script type="module" src="js/script3.js"></script>
 </body>
 </html>

@@ -10,7 +10,7 @@ const ownerList = [
     1,
     "@!@!21",
     "@!@!21",
-    new Cat("Dolly", 3, false)
+    [new Cat("Dolly", 3, false, 1), new Cat("Moly", 12, true, 1)]
   ),
   new Owner(
     "Ion",
@@ -20,7 +20,7 @@ const ownerList = [
     2,
     "@!@!21",
     "@!@!21",
-    new Dog("Hero", 2, "dog", "husky")
+    [new Dog("Hero", 2, "husky", 2)]
   ),
   new Owner(
     "Ana",
@@ -30,7 +30,7 @@ const ownerList = [
     3,
     "@!@!21",
     "@!@!21",
-    new Rabbit("Bruno", 5, "10cm")
+    [new Rabbit("Bruno", 5, "10cm", 3)]
   ),
   new Owner(
     "Stefan",
@@ -40,7 +40,7 @@ const ownerList = [
     4,
     "@!@!21",
     "@!@!21",
-    new Parrot("Jacob", 1, "red")
+    [new Parrot("Jacob", 1, "red", 4)]
   ),
   new Owner(
     "Marius",
@@ -50,7 +50,7 @@ const ownerList = [
     5,
     "@!@!21",
     "@!@!21",
-    new Snake("Bella", 4, "2m")
+    [new Snake("Bella", 4, "2m", 5)]
   ),
 ];
 

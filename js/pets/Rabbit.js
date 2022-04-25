@@ -1,8 +1,8 @@
 import Pet from "./Pet.js";
 
 class Rabbit extends Pet {
-  constructor(petName, petAge, earLength) {
-    super(petName, petAge, "rabbit");
+  constructor(petName, petAge, earLength, ownerId) {
+    super(petName, petAge, "rabbit", ownerId);
     this.earLength = earLength;
   }
 }
