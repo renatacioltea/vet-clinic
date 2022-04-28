@@ -46,6 +46,7 @@ document.addEventListener("submit", function (event) {
 
   //   get submitted data
   const formData = serializeForm(event.target);
+  console.log(formData);
 
   //   check if email exists
   const clientExists = emailExists(formData.email);

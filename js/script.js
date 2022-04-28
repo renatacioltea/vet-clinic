@@ -1,9 +1,11 @@
-import ownerList from "../data/owners.js";
+import { readFromStorage, writeToStorage } from "./storageHelper.js";
+
+const ownersList = readFromStorage("ownerList");
 
 //create an array of pets
 const arrayOfPets = new Array();
 
-ownerList.forEach((owner) => {
+ownersList.forEach((owner) => {
   owner.pet.forEach((pet) => {
     arrayOfPets.push({
       petName: pet.petName,
@@ -11,6 +13,7 @@ ownerList.forEach((owner) => {
       petType: pet.petType,
       firstName: owner.firstName,
       lastName: owner.lastName,
+      ownerId: owner.id,
     });
   });
 });
@@ -22,7 +25,7 @@ function consoleLogEvent(e) {
 }
 
 // creating a table
-const tableOfOwners = buildOwnerTable(ownerList);
+const tableOfOwners = buildOwnerTable(ownersList);
 document.body.appendChild(tableOfOwners);
 const tableOfPets = buildTableOfPets(arrayOfPets);
 document.body.appendChild(tableOfPets);
@@ -88,13 +91,14 @@ function buildOwnerTable(owners) {
       owner.id,
       `${owner.firstName} ${owner.lastName}`
     );
+
     const idCell = cell("td", a, true);
     const firstNameCell = cell("td", owner.firstName);
     const lastNameCell = cell("td", owner.lastName);
     const phoneNumberCell = cell("td", owner.phoneNumber);
     const emailCell = cell("td", owner.email);
     const actionCell = cell("td");
-    actionCell.innerHTML = "<button class='delete-button'>Delete</button>";
+    actionCell.innerHTML = `<button class="delete-button owner" data-id="${owner.id}">Delete</button>`;
 
     actionCell.addEventListener("mouseover", onHover);
 
@@ -173,7 +177,7 @@ function buildTableOfPets(arrayOfPets) {
     const firstNameCell = cell("td", pet.firstName);
     const lastNameCell = cell("td", pet.lastName);
     const actionCell = cell("td");
-    actionCell.innerHTML = "<button class='delete-button'>Delete</button>";
+    actionCell.innerHTML = `<button class='delete-button pet' data-ownerId=${pet.ownerId}>Delete</button>`;
     actionCell.addEventListener("mouseover", onHover);
 
     tableRow.append(
@@ -230,7 +234,7 @@ function resetTable() {
   });
 }
 
-//Table rows will change color when we mouse mous over
+//Table rows will change color when we mouse mouse over
 
 //Change color on owners table row
 const tableRows = document.querySelectorAll(`.table-row`);
@@ -257,20 +261,55 @@ tableRowsOwners.forEach((row) => {
 });
 
 // we add event listeners to the tables, on click we call de onDeleteRow function
-tableOfOwners.addEventListener("click", onDeleteRow);
-tableOfPets.addEventListener("click", onDeleteRow);
+// tableOfOwners.addEventListener("click", onDeleteOwner);
+// tableOfPets.addEventListener("click", onDeletePet);
+const ownerDeleteBtns = document.querySelectorAll(".delete-button.owner");
+const petDeleteBtns = document.querySelectorAll(".delete-button.pet");
 
-function onDeleteRow(e) {
-  if (!e.target.classList.contains("delete-button")) {
-    return;
+ownerDeleteBtns.forEach((btn) => {
+  btn.addEventListener("click", onDeleteOwner);
+});
+
+petDeleteBtns.forEach((btn) => {
+  btn.addEventListener("click", onDeletePet);
+});
+
+function onDeleteOwner(e) {
+  e.preventDefault();
+  const isRowDeleted = deleteTableRow(e);
+
+  // remove owner from ownersList
+
+  if (isRowDeleted) {
+    const ownerId = e.target.getAttribute("data-id");
+    deleteOwner(ownerId);
+    //delete pets
+    const petsList = document.querySelectorAll(`[data-ownerId="${ownerId}"]`);
+    petsList.forEach((el) => {
+      el.click();
+    });
   }
+}
+
+function onDeletePet(e) {
+  e.preventDefault();
+  const isRowDeleted = deleteTableRow(e);
+  // @TODO implement removing pet from DB
+}
+
+function deleteTableRow(e) {
   const button = e.target;
+
   let text = "Do you want to delete this row?\nSelect OK or Cancel.";
-  if (confirm(text) === true) {
+
+  if (confirm(text)) {
     text = "You pressed OK!";
     button.closest("tr").remove();
+
+    return true;
   } else {
     text = "You canceled!";
+    return false;
   }
 }
 
@@ -281,4 +320,12 @@ function onHover(e) {
   setTimeout(function () {
     e.target.style.background = "";
   }, 900);
+}
+
+function deleteOwner(ownerId) {
+  const newList = ownersList.filter((owner) => {
+    return owner.id.toString() !== ownerId;
+  });
+
+  writeToStorage("ownersList", newList);
 }

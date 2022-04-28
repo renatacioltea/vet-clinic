@@ -36,6 +36,7 @@ function addToStorage(key, value) {
 function deleteFromStorage(key, value) {
   // get the list from local storage.
   const list = readFromStorage(key);
+  console.log(list);
   // remove the value from the list
   const newList = list.filter((item) => {
     return item !== value;

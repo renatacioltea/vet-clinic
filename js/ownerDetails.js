@@ -5,6 +5,7 @@ import {
 } from "./storageHelper.js";
 
 const ownersList = readFromStorage("ownerList");
+console.log(ownersList);
 
 function getUrlParams() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -21,6 +22,7 @@ const urlParams = getUrlParams();
 const ownerId = getOwnerId(urlParams);
 
 function getOwnersDetails() {
+  console.log(ownersList);
   return ownersList.find((owner) => {
     return owner.id === parseInt(ownerId, 10);
   });
@@ -89,4 +91,32 @@ function buildTableOfPets(arrayOfPets) {
     tableOfPets.appendChild(tableRow);
   }
   return tableOfPets;
+}
+
+// add id for Url
+function generateLink(url) {
+  const a = document.querySelector(".edit-button");
+  // const link = document.createTextNode(text);
+  // a.appendChild(link);
+  a.href = url;
+
+  return a;
+}
+const a = generateLink(`/editForm.html?id=${currentOwner.id}`, "");
+
+const deleteBtn = document.getElementsByClassName("delete-btn");
+deleteBtn[0].addEventListener("click", deleteCurrentOwner);
+
+function deleteCurrentOwner(e) {
+  e.preventDefault();
+  deleteOwner(ownerId);
+  window.location.href = "/vetStructure.html";
+}
+
+function deleteOwner(ownerId) {
+  const newList = ownersList.filter((owner) => {
+    return owner.id.toString() !== ownerId;
+  });
+
+  writeToStorage("ownerList", newList);
 }
