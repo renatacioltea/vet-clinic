@@ -246,3 +246,8 @@ button {
   background: var(--btn-color);
   color: var(--primary-font-clr);
 }
+
+.error {
+  color: red;
+  display: block;
+}

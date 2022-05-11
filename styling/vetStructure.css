@@ -1,0 +1,56 @@
+table {
+  margin-bottom: 50px;
+  border-collapse: collapse;
+}
+
+td {
+  padding: 10px;
+  color: #444;
+}
+
+th {
+  padding: 10px;
+}
+
+tr {
+  border-bottom: 1px solid #999;
+}
+
+table a {
+  color: #29b6f6;
+  text-decoration: none;
+}
+
+.btn-styled,
+.delete-button,
+.edit-button,
+.delete-btn {
+  font-size: 14px;
+  line-height: 28px;
+  background: #1769aa;
+  color: #fff;
+  padding: 5px 15px;
+  margin-bottom: 20px;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-button,
+.delete-btn {
+  background: #a73a38;
+  margin-bottom: 0;
+  cursor: pointer;
+}
+
+.edit-button {
+  background: #51d1e1;
+  padding: 11px 25px;
+}
+
+.card {
+  border-radius: 12px;
+  padding: 20px;
+  background-color: #f3f3f3;
+  margin-bottom: 30px;
+}
