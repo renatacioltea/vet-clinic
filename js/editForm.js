@@ -20,7 +20,6 @@ function getOwnerId(urlParams) {
 const urlParams = getUrlParams();
 
 const ownerId = getOwnerId(urlParams);
-console.log(ownerId);
 
 function getOwnersDetails() {
   return ownersList.find((owner) => {
@@ -28,7 +27,6 @@ function getOwnersDetails() {
   });
 }
 const currentOwner = getOwnersDetails();
-console.log(currentOwner);
 
 const arrayOfPets = new Array();
 
@@ -77,6 +75,7 @@ let serializeForm = function (form) {
 
 document.addEventListener("submit", function (e) {
   e.preventDefault();
+
   //   get submitted data
   const formData = serializeForm(e.target);
 

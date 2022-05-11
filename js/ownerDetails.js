@@ -96,8 +96,6 @@ function buildTableOfPets(arrayOfPets) {
 // add id for Url
 function generateLink(url) {
   const a = document.querySelector(".edit-button");
-  // const link = document.createTextNode(text);
-  // a.appendChild(link);
   a.href = url;
 
   return a;

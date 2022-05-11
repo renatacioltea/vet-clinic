@@ -1,4 +1,9 @@
-import { readFromStorage, writeToStorage } from "./storageHelper.js";
+import Pet from "./pets/Pet.js";
+import {
+  addToStorage,
+  readFromStorage,
+  writeToStorage,
+} from "./storageHelper.js";
 
 const ownersList = readFromStorage("ownerList");
 
@@ -28,6 +33,7 @@ function consoleLogEvent(e) {
 const tableOfOwners = buildOwnerTable(ownersList);
 document.body.appendChild(tableOfOwners);
 const tableOfPets = buildTableOfPets(arrayOfPets);
+tableOfPets.classList.add("petTable");
 document.body.appendChild(tableOfPets);
 
 function cell(cellType, cellText, node = false) {
@@ -263,55 +269,58 @@ tableRowsOwners.forEach((row) => {
 // we add event listeners to the tables, on click we call de onDeleteRow function
 // tableOfOwners.addEventListener("click", onDeleteOwner);
 // tableOfPets.addEventListener("click", onDeletePet);
-const ownerDeleteBtns = document.querySelectorAll(".delete-button.owner");
-const petDeleteBtns = document.querySelectorAll(".delete-button.pet");
+// const ownerDeleteBtns = document.querySelectorAll(".delete-button.owner");
+// const petDeleteBtns = document.querySelectorAll(".delete-button.pet");
 
-ownerDeleteBtns.forEach((btn) => {
-  btn.addEventListener("click", onDeleteOwner);
-});
+// ownerDeleteBtns.forEach((btn) => {
+//   btn.addEventListener("click", onDeleteOwner);
+// });
 
-petDeleteBtns.forEach((btn) => {
-  btn.addEventListener("click", onDeletePet);
-});
+// petDeleteBtns.forEach((btn) => {
+//   btn.addEventListener("click", onDeletePet);
+// });
 
-function onDeleteOwner(e) {
-  e.preventDefault();
-  const isRowDeleted = deleteTableRow(e);
+// function onDeleteOwner(e) {
+//   e.preventDefault();
 
-  // remove owner from ownersList
+//   const isRowDeleted = deleteTableRow(e);
 
-  if (isRowDeleted) {
-    const ownerId = e.target.getAttribute("data-id");
-    deleteOwner(ownerId);
-    //delete pets
-    const petsList = document.querySelectorAll(`[data-ownerId="${ownerId}"]`);
-    petsList.forEach((el) => {
-      el.click();
-    });
-  }
-}
+//   // remove owner from ownersList
 
-function onDeletePet(e) {
-  e.preventDefault();
-  const isRowDeleted = deleteTableRow(e);
-  // @TODO implement removing pet from DB
-}
+//   if (isRowDeleted) {
+//     const ownerId = e.target.getAttribute("data-id");
+//     deleteOwner(ownerId);
 
-function deleteTableRow(e) {
-  const button = e.target;
+//     //delete pets
+//     const petsList = document.querySelectorAll(`[data-ownerId="${ownerId}"]`);
+//     petsList.forEach((el) => {
+//       el.click();
+//     });
+//   }
+// }
 
-  let text = "Do you want to delete this row?\nSelect OK or Cancel.";
+// function onDeletePet(e) {
+//   e.preventDefault();
+//   const isRowDeleted = deleteTableRow(e);
 
-  if (confirm(text)) {
-    text = "You pressed OK!";
-    button.closest("tr").remove();
+//   // @TODO implement removing pet from DB
+// }
 
-    return true;
-  } else {
-    text = "You canceled!";
-    return false;
-  }
-}
+// function deleteTableRow(e) {
+//   const button = e.target;
+
+//   let text = "Do you want to delete this row?\nSelect OK or Cancel.";
+
+//   if (confirm(text)) {
+//     text = "You pressed OK!";
+//     button.closest("tr").remove();
+
+//     return true;
+//   } else {
+//     text = "You canceled!";
+//     return false;
+//   }
+// }
 
 //delete button change background color when we hover over
 function onHover(e) {
@@ -329,3 +338,59 @@ function deleteOwner(ownerId) {
 
   writeToStorage("ownersList", newList);
 }
+
+// button for create action with jquery
+
+$(document).ready(function () {
+  $("body").prepend(
+    $(document.createElement("button")).prop({
+      type: "button",
+      innerHTML: "Create",
+      class: "btn-styled",
+    })
+  );
+
+  $(".form-content").dialog({
+    autoOpen: false,
+    show: {
+      effect: "fade",
+    },
+  });
+
+  $(".btn-styled").click(function () {
+    $(".form-content").dialog("open");
+  });
+
+  $(".submit").click(function (e) {
+    e.preventDefault();
+    const petName = $("#pet-name").val();
+    const petAge = $("#pet-age").val();
+    const petType = $("#pet-type").val();
+    const firstName = $("#first-name").val();
+    const lastName = $("#last-name").val();
+
+    const row =
+      "<tr><td>" +
+      petName +
+      "</td><td>" +
+      petAge +
+      "</td></td>" +
+      "</td><td>" +
+      petType +
+      "</td><td>" +
+      firstName +
+      "</td><td>" +
+      lastName +
+      '</td><td><button class="delete-button">Delete</button></td></tr>';
+
+    $(".petTable").append(row);
+  });
+
+  $(".delete-button").on("click", function () {
+    $(this)
+      .closest("tr")
+      .fadeOut(1000, function () {
+        $(this).closest("tr").remove();
+      });
+  });
+});
